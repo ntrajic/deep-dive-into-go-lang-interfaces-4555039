@@ -13,12 +13,25 @@ type Event struct {
 	Message string    `json:"message,omitempty"`
 }
 
-type Encoder struct {
-	w io.Writer
+type syncer interface {
+	Sync() error
 }
 
+type Encoder struct {
+	w io.Writer
+	s syncer
+}
+
+type nopSyncer struct{}
+
+func (nopSyncer) Sync() error { return nil }
+
 func NewEncoder(w io.Writer) *Encoder {
-	e := Encoder{w: w}
+	e := Encoder{w: w, s: nopSyncer{}}
+	if s, ok := w.(syncer); ok {
+		e.s = s
+	}
+
 	return &e
 }
 
@@ -36,6 +49,8 @@ func (e *Encoder) Encode(evt Event) error {
 	if n != len(data) {
 		return fmt.Errorf("partial write (%d out of %d bytes)", n, len(data))
 	}
+
+	e.s.Sync()
 
 	return nil
 }
