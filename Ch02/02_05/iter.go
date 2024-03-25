@@ -8,27 +8,27 @@ type User struct {
 }
 
 type UserIter interface {
-	Next() (User, bool)
+	Next(*User) bool
 }
 
 type Query struct {
 	n int
 }
 
-func (q *Query) Next() (User, bool) {
+func (q *Query) Next(u *User) bool {
 	if q.n == 5 {
-		return User{}, false
+		return false
 	}
 
 	q.n++
-	u := User{
-		Login: fmt.Sprintf("user-%d", q.n),
-	}
-	return u, true
+	u.Login = fmt.Sprintf("user-%d", q.n)
+	
+	return true
 }
 
 func PrintUsers(ui UserIter) {
-	for u, ok := ui.Next(); ok; u, ok = ui.Next() {
+	var u User
+	for ui.Next(&u) {
 		fmt.Println(u)
 	}
 }
