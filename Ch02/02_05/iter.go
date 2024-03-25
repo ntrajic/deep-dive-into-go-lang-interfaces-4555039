@@ -2,10 +2,6 @@ package main
 
 import "fmt"
 
-type Iter[T any] interface {
-	Next() (T, bool)
-}
-
 type User struct {
 	Login string
 	// TODO: More fields
