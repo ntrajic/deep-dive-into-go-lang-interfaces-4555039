@@ -5,7 +5,7 @@ type Record struct {
 	Data []byte
 }
 
-// Puller pull a single record from the database.
+// Puller pulls a single record from the database.
 type Puller interface {
 	Pull(r *Record) error
 }
