@@ -7,6 +7,10 @@ type User struct {
 	// TODO: More fields
 }
 
+type UserIter interface {
+	Next() (User, bool)
+}
+
 type Query struct {
 	n int
 }
@@ -23,9 +27,13 @@ func (q *Query) Next() (User, bool) {
 	return u, true
 }
 
-func main() {
-	var q Query
-	for u, ok := q.Next(); ok; u, ok = q.Next() {
+func PrintUsers(ui UserIter) {
+	for u, ok := ui.Next(); ok; u, ok = ui.Next() {
 		fmt.Println(u)
 	}
+}
+
+func main() {
+	var q Query
+	PrintUsers(&q)
 }
