@@ -17,6 +17,11 @@ type Encoder struct {
 	w io.Writer
 }
 
+func NewEncoder(w io.Writer) *Encoder {
+	e := Encoder{w: w}
+	return &e
+}
+
 func (e *Encoder) Encode(evt Event) error {
 	data, err := json.Marshal(evt)
 	if err != nil {
@@ -36,7 +41,7 @@ func (e *Encoder) Encode(evt Event) error {
 }
 
 func main() {
-	enc := Encoder{os.Stdout}
+	enc := NewEncoder(os.Stdout)
 	evt := Event{
 		Time:    time.Now().UTC(),
 		Message: "elliot login",
