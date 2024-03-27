@@ -1,49 +1,26 @@
-package tempus
+package pool
 
-import (
-	"encoding/json"
-	"encoding/xml"
-	"fmt"
-)
+import "fmt"
 
-func ExampleMarshal() {
-	d := Date{2024, 02, 17}
-
-	fmt.Println("- JSON")
-	data, err := json.Marshal(d)
-	if err != nil {
-		fmt.Println("ERROR:", err)
-		return
+func ExamplePool() {
+	p := New[[]byte](nil)
+	n := 3
+	for i := 0; i < n; i++ {
+		p.Put(make([]byte, 1024))
 	}
-	fmt.Println(string(data))
 
-	var d2 Date
-	if err := json.Unmarshal(data, &d2); err != nil {
-		fmt.Println("ERROR:", err)
-		return
+	for i := 0; i < n; i++ {
+		b, ok := p.Get()
+		fmt.Printf("len: %d, ok=%v\n", len(b), ok)
 	}
-	fmt.Println(d2)
 
-	fmt.Println("- XML")
-	data, err = xml.Marshal(d)
-	if err != nil {
-		fmt.Println("ERROR:", err)
-		return
-	}
-	fmt.Println(string(data))
-
-	var d3 Date
-	if err := xml.Unmarshal(data, &d3); err != nil {
-		fmt.Println("ERROR:", err)
-		return
-	}
-	fmt.Println(d3)
+	// Empty pool
+	b, ok := p.Get()
+	fmt.Printf("len: %d, ok=%v\n", len(b), ok)
 
 	// Output:
-	// - JSON
-	// "2024-02-17"
-	// {2024 2 17}
-	// - XML
-	// <Date>2024-02-17</Date>
-	// {2024 2 17}
+	// len: 1024, ok=true
+	// len: 1024, ok=true
+	// len: 1024, ok=true
+	// len: 0, ok=false
 }
