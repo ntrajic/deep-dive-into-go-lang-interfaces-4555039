@@ -28,3 +28,12 @@ func ExampleLineCount() {
 	// 4 <nil>
 	// 4 <nil>
 }
+
+
+// OUT:
+// Running tool: /usr/local/go/bin/go test -timeout 30s -run ^ExampleLineCount$ example.com/m
+//
+// === RUN   ExampleLineCount
+// --- PASS: ExampleLineCount (0.00s)
+// PASS
+// ok      example.com/m   0.003s

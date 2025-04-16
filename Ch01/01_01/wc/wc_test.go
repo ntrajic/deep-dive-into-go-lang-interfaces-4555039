@@ -20,3 +20,16 @@ func TestLineCountError(t *testing.T) {
 		t.Fatal("no error on read")
 	}
 }
+
+
+// OUT:
+// Running tool: /usr/local/go/bin/go test -timeout 30s -run ^TestLineCountError$ example.com/m
+//
+// ok  	example.com/m	(cached)
+
+// Running tool: /usr/local/go/bin/go test -timeout 30s -run ^TestLineCountError$ example.com/m
+//
+// === RUN   TestLineCountError
+// --- PASS: TestLineCountError (0.00s)
+// PASS
+// ok      example.com/m   0.002s
